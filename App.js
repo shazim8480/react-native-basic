@@ -18,9 +18,12 @@ export default function App() {
       ...currentGoals,
       { id: Math.random().toString(), value: goalTitle },
     ]);
+
+    //close the modal upon adding a goal//
+    setIsModalVisible(false);
   };
 
-  // delete items handler//
+  // delete goal handler//
   const removeGoalHandler = (goalID) => {
     // filter using id, if do not match both id, then keep it. Otherwise Delete//
     setAllGoals((currentGoals) => {
@@ -28,12 +31,22 @@ export default function App() {
     });
   };
 
+  // cancel button modal close handler//
+  const cancelGoalHandler = () => {
+    //closes modal onPress cancel button//
+    setIsModalVisible(false);
+  };
+
   return (
     <View style={styles.screen}>
       {/* BUTTON To activate modal */}
       <Button title="Add a Goal" onPress={() => setIsModalVisible(true)} />
       {/* render goal INPUT here */}
-      <GoalInput visible={isModalVisible} onAddGoal={addGoalHandler} />
+      <GoalInput
+        visible={isModalVisible}
+        onAddGoal={addGoalHandler} // onAddGoal in passed as props //
+        onCancel={cancelGoalHandler} // onCancel in passed as props //
+      />
 
       {/* render all added goals here from GoalItem component*/}
       <FlatList
@@ -41,7 +54,7 @@ export default function App() {
         renderItem={(itemData) => (
           <GoalItem
             id={itemData.item.id}
-            onDelete={removeGoalHandler}
+            onDelete={removeGoalHandler} // onDelete in passed as props //
             title={itemData.item.value}
           />
         )}
